@@ -28,20 +28,6 @@ class Role(db.Model):
         if self.permissions is None:
             self.permissions = 0
     
-    def add_permission(self, perm):
-        if not self.has_permission(perm):
-            self.permissions += perm
-    
-    def remove_permissions(self, perm):
-        if self.has_permission(perm):
-            self.permissions -= perm
-    
-    def reset_permissions(self):
-        self.permissions = 0
-
-    def has_permission(self, perm):
-        return self.permissions & perm == perm
-    
     @staticmethod
     def insert_roles():
         roles = {
@@ -60,6 +46,20 @@ class Role(db.Model):
             role.default = (role.name == default_role)
             db.session.add(role)
         db.session.commit()
+    
+    def add_permission(self, perm):
+        if not self.has_permission(perm):
+            self.permissions += perm
+    
+    def remove_permissions(self, perm):
+        if self.has_permission(perm):
+            self.permissions -= perm
+    
+    def reset_permissions(self):
+        self.permissions = 0
+
+    def has_permission(self, perm):
+        return self.permissions & perm == perm
 
     def __repr__(self):
         return '<Role {}>'.format(self.name)
@@ -72,6 +72,10 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     confirmed = db.Column(db.Boolean, default=False)
+    location = db.Column(db.String(64))
+    about_me = db.Column(db.Text())
+    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
