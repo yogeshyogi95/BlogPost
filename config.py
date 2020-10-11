@@ -11,7 +11,7 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     BLOGPOST_MAIL_SUBJECT_PREFIX = '[Flasky]'
-    BLOGPOST_MAIL_SENDER = 'Flasky Admin <flasky@example.com>'
+    BLOGPOST_MAIL_SENDER = 'BlogPost Admin <flasky@example.com>'
     BLOGPOST_ADMIN = os.environ.get('BLOGPOST_ADMIN')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
