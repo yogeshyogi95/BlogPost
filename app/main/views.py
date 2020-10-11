@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, url_for, current_app
+from flask import render_template, session, redirect, url_for, current_app, request, flash
 from flask_login import current_user, login_required
 from .. import db
 from ..models import User, Permission, Post
@@ -15,8 +15,11 @@ def index():
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('.index'))
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template('index.html', form=form, posts=posts)
+    page = request.args.get('page', 1, type=int)
+    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(page, 
+                    per_page=current_app.config['BLOGPOSTS_PER_PAGE'], error_out=False)
+    posts = pagination.items
+    return render_template('index.html', form=form, posts=posts, pagination=pagination)
 
 @main.route('/user/<username>')
 def user(username):
@@ -46,6 +49,7 @@ def edit_profile():
 @admin_required
 def edit_profile_admin(id):
     user = User.query.get_or_404(id)
+    print(user)
     form = EditProfileAdminForm()
     if form.validate_on_submit():
         user.email = form.email.data

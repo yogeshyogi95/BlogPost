@@ -14,6 +14,7 @@ class Config:
     BLOGPOST_MAIL_SENDER = 'BlogPost Admin <flasky@example.com>'
     BLOGPOST_ADMIN = os.environ.get('BLOGPOST_ADMIN')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    BLOGPOSTS_PER_PAGE = 10
 
     @staticmethod
     def init_app(app):
