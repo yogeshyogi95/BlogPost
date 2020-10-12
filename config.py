@@ -16,6 +16,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BLOGPOSTS_PER_PAGE = 10
     BLOGPOST_FOLLOWERS_PER_PAGE = 10
+    BLOGPOST_COMMENTS_PER_PAGE = 5
 
     @staticmethod
     def init_app(app):
